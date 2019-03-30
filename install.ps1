@@ -39,5 +39,8 @@ if (!(";$Path;".ToLower() -like "*;$BinDir;*".ToLower())) {
 
 # TODO Create symlink from each add-in to "env:APPDATA\Microsoft\Addins"
 
+# TODO Look into updating registry for HKCU\Software\Microsoft\Office\VERSION\APPLICATION\Security: AccessVBOM=1
+# See https://github.com/vba-blocks/vba-blocks/blob/833e86d3f16aca2caa588d594d9361c2fddd5f0c/installer/actions/src/registry.rs#L89
+
 Write-Output "vba-blocks was installed successfully!"
 Write-Output "Run 'vba --help' to get started"
