@@ -7,9 +7,10 @@ if ($args.Length -gt 0) {
   $Version = $args.Get(0)
 }
 
-$LibDir = "env:APPDATA\vba-blocks"
+$LibDir = "$env:APPDATA\vba-blocks"
 $BinDir ="$LibDir\bin"
 $ZipFile = "$LibDir\vba-blocks.$Zip"
+$AddinsDir = "$LibDir\addins\build"
 
 $ReleaseUri = if (!$Version) {
   $Response = Invoke-WebRequest 'https://github.com/vba-blocks/vba-blocks/releases'
@@ -37,7 +38,18 @@ if (!(";$Path;".ToLower() -like "*;$BinDir;*".ToLower())) {
   $Env:Path += ";$BinDir"
 }
 
-# TODO Create symlink from each add-in to "env:APPDATA\Microsoft\Addins"
+function New-Shortcut ($Src, $Dest) {
+  Try {
+    $WshShell = New-Object -comObject WScript.Shell
+    $Shortcut = $WshShell.CreateShortcut($Dest)
+    $Shortcut.TargetPath = $Src
+    $Shortcut.Save()
+  } Catch {
+    Write-Output "Failed to link add-ins, they can instead be found in $AddinsDir."
+  }
+}
+
+New-Shortcut "$AddinsDir" "$env:AppData\Microsoft\Addins\vba-blocks Add-ins.lnk"
 
 function Enable-VBOM ($App) {
   Try {
