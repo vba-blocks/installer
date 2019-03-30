@@ -40,4 +40,4 @@ else
 	echo "Run '$bin_dir/vba --help' to get started"
 fi
 
-# TODO Create "$HOME/vba-blocks Addins" symlink to "$lib_dir/addins"
+# TODO Create symlink from "$lib_dir/addins" to "$HOME/vba-blocks/addins" (visible and easily accessible)

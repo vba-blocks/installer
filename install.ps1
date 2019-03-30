@@ -37,5 +37,7 @@ if (!(";$Path;".ToLower() -like "*;$BinDir;*".ToLower())) {
   $Env:Path += ";$BinDir"
 }
 
+# TODO Create symlink from each add-in to "env:APPDATA\Microsoft\Addins"
+
 Write-Output "vba-blocks was installed successfully!"
 Write-Output "Run 'vba --help' to get started"
