@@ -5,6 +5,15 @@
 
 set -e
 
+app_dir="$HOME/Library/Application Support/vba-blocks"
+bin_dir="$lib_dir/bin"
+addins_dir="$lib_dir/addins/build"
+addins_link="$HOME/vba-blocks Add-ins"
+zip_file="$lib_dir/vba-blocks-mac.tar.gz"
+export_bin="export PATH=\"\$PATH:$bin_dir\""
+profile="$HOME/.profile"
+bash_profile="$HOME/.bash_profile"
+
 if [ $# -eq 0 ]; then
 	release_path=$(curl -sSf https://github.com/vba-blocks/vba-blocks/releases |
 		grep -o "/vba-blocks/vba-blocks/releases/download/.*/vba-blocks-mac\\.tar\\.gz" |
@@ -15,10 +24,6 @@ else
 	release_uri="https://github.com/vba-blocks/vba-blocks/releases/download/${1}/vba-blocks-mac.tar.gz"
 fi
 
-lib_dir="$HOME/Library/Application Support/vba-blocks"
-bin_dir="$lib_dir/bin"
-zip_file="$lib_dir/vba-blocks-mac.tar.gz"
-
 if [ ! -d "$lib_dir" ]; then
 	mkdir -p "$lib_dir"
 fi
@@ -28,16 +33,19 @@ tar -xzf "$zip_file"
 chmod +x "$bin_dir/vba-blocks"
 chmod +x "$bin_dir/vba"
 
-echo "vba-blocks was installed successfully to $lib_dir"
-if command -v vba-blocks >/dev/null; then
-	echo "Run 'vba --help' to get started"
-else
-	# TODO Automate this similar to rustup
-	# https://github.com/rust-lang/rustup.rs/blob/fa154f67d773c44e8fba07db4ec8f5ef97db54cb/src/cli/self_update.rs#L1186
-
-	echo "Manually add the directory to your \$HOME/.bash_profile (or similar)"
-	echo "  export PATH=\"$bin_dir:\$PATH\""
-	echo "Run '$bin_dir/vba --help' to get started"
+# Add bin to .profile / .bash_profile
+if ! [ -a $profile ] || ! grep -q $bin_dir $profile; then
+  echo "Adding $export_bin to $profile"
+  echo $export_bin >> "$profile"
+fi
+if [ -a $bash_profile ] && ! grep -q $bin_dir $bash_profile; then
+  echo "Adding $export_bin to $bash_profile"
+  echo $export_bin >> "$bash_profile"
 fi
 
-# TODO Create symlink from "$lib_dir/addins" to "$HOME/vba-blocks/addins" (visible and easily accessible)
+# Create accessible add-ins folder
+echo "Linking $addins_dir to $addins_link"
+ln -sf "$addins_dir" "$addins_link"
+
+echo "vba-blocks was installed successfully to $lib_dir"
+echo "Run 'vba --help' to get started"
