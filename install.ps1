@@ -13,10 +13,18 @@ $ZipFile = "$LibDir\vba-blocks.zip"
 $AddinsDir = "$LibDir\addins\build"
 
 $ReleaseUri = if (!$Version) {
-  $Response = Invoke-WebRequest 'https://github.com/vba-blocks/vba-blocks/releases'
-  $Response.Links |
-    Where-Object { $_.href -like "/vba-blocks/vba-blocks/releases/download/*/vba-blocks-win.zip" } |
-    ForEach-Object { 'https://github.com' + $_.href } |
+  $Response = Invoke-WebRequest "https://github.com/vba-blocks/vba-blocks/releases"
+
+  $HTMLFile = New-Object -Com HTMLFile
+  if ($HTMLFile.IHTMLDocument2_write) {
+    $HTMLFile.IHTMLDocument2_write($Response.Content)
+  } else {
+    $ResponseBytes = [Text.Encoding]::Unicode.GetBytes($Response.Content)
+    $HTMLFile.write($ResponseBytes)
+  }
+  $HTMLFile.getElementsByTagName('a') |
+    Where-Object { $_.href -like "about:/vba-blocks/vba-blocks/releases/download/*/vba-blocks-win.zip" } |
+    ForEach-Object { $_.href -replace 'about:', 'https://github.com' } |
     Select-Object -First 1
 } else {
   "https://github.com/vba-blocks/vba-blocks/releases/download/$Version/vba-blocks-win.zip"
@@ -73,6 +81,6 @@ Enable-VBOM "Excel"
 # TODO Enable-VBOM "PowerPoint"
 # TODO Enable-VBOM "Access"
 
-Write-Output
+Write-Output ""
 Write-Output "vba-blocks was installed successfully!"
 Write-Output "Run 'vba --help' to get started"
