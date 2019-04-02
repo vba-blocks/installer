@@ -34,18 +34,18 @@ if (!(Test-Path $LibDir)) {
   New-Item $LibDir -ItemType Directory | Out-Null
 }
 
-Write-Output "Downloading vba-blocks..."
+Write-Output "[1/5] Downloading vba-blocks..."
 Write-Output "($ReleaseUri)"
 Invoke-WebRequest $ReleaseUri -Out $ZipFile
 
-Write-Output "Extracting vba-blocks..."
+Write-Output "[2/5] Extracting vba-blocks..."
 Expand-Archive $ZipFile -Destination $LibDir -Force
 Remove-Item $ZipFile
 
+Write-Output "[3/5] Adding vba-blocks to PATH..."
 $User = [EnvironmentVariableTarget]::User
 $Path = [Environment]::GetEnvironmentVariable('Path', $User)
 if (!(";$Path;".ToLower() -like "*;$BinDir;*".ToLower())) {
-  Write-Output "Adding vba-blocks to PATH..."
   [Environment]::SetEnvironmentVariable('Path', "$Path;$BinDir", $User)
   $Env:Path += ";$BinDir"
 }
@@ -61,7 +61,7 @@ function New-Shortcut ($Src, $Dest) {
   }
 }
 
-Write-Output "Creating shortcup to add-ins..."
+Write-Output "[4/5] Creating shortcut to add-ins..."
 New-Shortcut "$AddinsDir" "$env:AppData\Microsoft\Addins\vba-blocks Add-ins.lnk"
 
 function Enable-VBOM ($App) {
@@ -75,12 +75,12 @@ function Enable-VBOM ($App) {
   }
 }
 
-Write-Output "Enabling access to VBA project object model..."
+Write-Output "[5/5] Enabling access to VBA project object model..."
 Enable-VBOM "Excel"
 # TODO Enable-VBOM "Word"
 # TODO Enable-VBOM "PowerPoint"
 # TODO Enable-VBOM "Access"
 
 Write-Output ""
-Write-Output "vba-blocks was installed successfully!"
+Write-Output "Success! vba-blocks was installed successfully."
 Write-Output "Run 'vba --help' to get started"
