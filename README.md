@@ -1,4 +1,4 @@
-# vba-blocks CLI Installer
+# vba-blocks Installer
 
 ## Install Latest Version
 
@@ -99,3 +99,5 @@ Allow scripts that are downloaded from the internet to be executed by setting th
 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 ```
 </details>
+
+_Based on the great work on [deno_install](https://github.com/denoland/deno_install)_
