@@ -2,6 +2,7 @@
 # Copyright 2018 the Deno authors. All rights reserved. MIT license.
 
 $ErrorActionPreference = 'Stop'
+$ReleaseUri = "https://github.com/vba-blocks/vba-blocks/releases/download/v0.2.0/vba-blocks-win.zip"
 
 if ($args.Length -gt 0) {
   $Version = $args.Get(0)
@@ -12,15 +13,15 @@ $BinDir ="$LibDir\bin"
 $ZipFile = "$LibDir\vba-blocks.$Zip"
 $AddinsDir = "$LibDir\addins\build"
 
-$ReleaseUri = if (!$Version) {
-  $Response = Invoke-WebRequest 'https://github.com/vba-blocks/vba-blocks/releases'
-  $Response.Links |
-    Where-Object { $_.href -like "/vba-blocks/vba-blocks/releases/download/*/vba-blocks-win.zip" } |
-    ForEach-Object { 'https://github.com' + $_.href } |
-    Select-Object -First 1
-} else {
-  "https://github.com/vba-blocks/vba-blocks/releases/download/$Version/vba-blocks-win.zip"
-}
+# $ReleaseUri = if (!$Version) {
+#   $Response = Invoke-WebRequest 'https://github.com/vba-blocks/vba-blocks/releases'
+#   $Response.Links |
+#     Where-Object { $_.href -like "/vba-blocks/vba-blocks/releases/download/*/vba-blocks-win.zip" } |
+#     ForEach-Object { 'https://github.com' + $_.href } |
+#     Select-Object -First 1
+# } else {
+#   "https://github.com/vba-blocks/vba-blocks/releases/download/$Version/vba-blocks-win.zip"
+# }
 
 if (!(Test-Path $LibDir)) {
   New-Item $LibDir -ItemType Directory | Out-Null
