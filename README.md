@@ -100,4 +100,6 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
 ```
 </details>
 
+---
+
 _Based on the great work on [deno_install](https://github.com/denoland/deno_install)_
