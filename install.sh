@@ -29,31 +29,41 @@ if [ ! -d "$lib_dir" ]; then
 	mkdir -p "$lib_dir"
 fi
 
-echo "Downloading vba-blocks..."
-echo "($release_uri)"
+echo "[1/4] Downloading vba-blocks..."
 curl -fL# -o "$zip_file" "$release_uri"
 
-echo ""
-echo "Extracting vba-blocks..."
+echo "[2/4] Extracting vba-blocks..."
 tar -xzf "$zip_file" --directory "$lib_dir"
 chmod +x "$bin_dir/vba-blocks"
 chmod +x "$bin_dir/vba"
 chmod +x "$lib_dir/vendor/node"
 
 # Add bin to .profile / .bash_profile
+echo "[3/4] Adding vba-blocks to PATH"
 if ! [ -a $profile ] || ! grep -q "$bin_dir" $profile; then
-  echo "Adding vba-blocks to $profile"
   echo $export_bin >> "$profile"
 fi
 if [ -a $bash_profile ] && ! grep -q "$bin_dir" $bash_profile; then
-  echo "Adding vba-blocks to $bash_profile"
   echo $export_bin >> "$bash_profile"
 fi
 
 # Create accessible add-ins folder
-echo "Creating link to add-ins at \"$addins_link\"..."
+echo "[4/4] Creating link to add-ins at \"$addins_link\"..."
 ln -sf "$addins_dir" "$addins_link"
 
 echo ""
-echo "vba-blocks was installed successfully!"
-echo "Run 'vba --help' to get started"
+echo "\033[32mSuccess!\033[m vba-blocks was installed successfully."
+echo "Open a new Terminal window and run 'vba --help' to get started"
+echo ""
+echo "[Additional Instructions]"
+echo ""
+echo "For more recent versions of Office for Mac, you will need to"
+echo "trust access to the VBA project object model"
+echo "for vba-blocks to work correctly."
+echo ""
+echo "1. Open Excel"
+echo "2. Click \"Excel\" in the menu bar"
+echo "3. Select \"Preferences\" in the menu"
+echo "4. Click \"Security\" in the Preferences dialog"
+echo "5. Check \"Trust access to the VBA project object model\""
+echo "   in the Security dialog"
