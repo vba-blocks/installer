@@ -15,11 +15,11 @@ $AddinsDir = "$LibDir\addins\build"
 $ReleaseUri = if (!$Version) {
   $Response = Invoke-WebRequest 'https://github.com/vba-blocks/vba-blocks/releases'
   $Response.Links |
-    Where-Object { $_.href -like "/vba-blocks/vba-blocks/releases/download/*/vba-blocks-*-win.zip" } |
+    Where-Object { $_.href -like "/vba-blocks/vba-blocks/releases/download/*/vba-blocks-win.zip" } |
     ForEach-Object { 'https://github.com' + $_.href } |
     Select-Object -First 1
 } else {
-  "https://github.com/vba-blocks/vba-blocks/releases/download/$Version/vba-blocks-$Version-win.zip"
+  "https://github.com/vba-blocks/vba-blocks/releases/download/$Version/vba-blocks-win.zip"
 }
 
 if (!(Test-Path $LibDir)) {
