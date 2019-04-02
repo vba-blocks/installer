@@ -16,18 +16,16 @@ In terminal, run the following:
 $ curl -fsSL https://vba-blocks.com/install.sh | sh
 ```
 
-## Directories
+For more recent versions of Office for Mac, you will need to trust access to the VBA project object model for vba-blocks to work correctly:
 
-|       | Windows                                 | macOS
-| --    | --                                      | --
-| lib   | C:\Users\me\AppData\Roaming\vba-blocks\ | /Users/me/Library/Application Support/vba-blocks
-| cache | C:\Users\me\AppData\Local\vba-blocks\   | /Users/me/Library/Caches/vba-blocks/
-
-|       | Windows                    | macOS
-| --    | --                         | --
-| lib   | %appdata%\vba-blocks\      | $HOME/Library/Application Support/vba-blocks
-| cache | %localappdata%\vba-blocks\ | $HOME/Library/Caches/vba-blocks/
-
-References:
-- [denoland/deno_install#40](https://github.com/denoland/deno_install/issues/40)
-- [macOS Standard Directories](https://developer.apple.com/library/archive/documentation/FileManagement/Conceptual/FileSystemProgrammingGuide/FileSystemOverview/FileSystemOverview.html#//apple_ref/doc/uid/TP40010672-CH2-SW6)
+<details>
+  <summary>Trust access to the VBA project object model</summary>
+  <ol>
+    <li>Open Excel</li>
+    <li>Click "Excel" in the menu bar</li>
+    <li>Select "Preferences" in the menu</li>
+    <li>Click "Security" in the Preferences dialog</li>
+    <li>Check "Trust access to the VBA project object model" in the Security dialog</li>
+    <img src="./images/trust-access-VBOM.png">
+ </ol>
+</details>
