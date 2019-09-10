@@ -12,6 +12,9 @@ $BinDir ="$LibDir\bin"
 $ZipFile = "$LibDir\vba-blocks.zip"
 $AddinsDir = "$LibDir\addins\build"
 
+# GitHub requires TLS 1.2
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
 $ReleaseUri = if (!$Version) {
   $Response = Invoke-WebRequest "https://github.com/vba-blocks/vba-blocks/releases"
 
