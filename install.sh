@@ -11,6 +11,7 @@ addins_dir="$lib_dir/addins/build"
 addins_link="$HOME/vba-blocks Add-ins"
 zip_file="$lib_dir/vba-blocks-mac.tar.gz"
 export_bin="export PATH=\"\$PATH:$bin_dir\""
+zprofile="$HOME/.zprofile"
 profile="$HOME/.profile"
 bash_profile="$HOME/.bash_profile"
 
@@ -38,8 +39,11 @@ chmod +x "$bin_dir/vba-blocks"
 chmod +x "$bin_dir/vba"
 chmod +x "$lib_dir/vendor/node"
 
-# Add bin to .profile / .bash_profile
+# Add bin to .zprofile / .profile / .bash_profile
 echo "[3/4] Adding vba-blocks to PATH"
+if [ -a $zprofile ] && ! grep -q "$bin_dir" $zprofile; then
+  echo $export_bin >> "$zprofile"
+fi
 if ! [ -a $profile ] || ! grep -q "$bin_dir" $profile; then
   echo $export_bin >> "$profile"
 fi
