@@ -9,6 +9,7 @@ if ($args.Length -gt 0) {
 
 $LibDir = "$env:APPDATA\vba-blocks"
 $BinDir ="$LibDir\bin"
+$Exe = "$BinDir\vba"
 $ZipFile = "$LibDir\vba-blocks.zip"
 $AddinsDir = "$LibDir\addins\build"
 
@@ -86,4 +87,8 @@ Enable-VBOM "Excel"
 
 Write-Output ""
 Write-Output "Success! vba-blocks was installed successfully."
+Write-Output ""
+Write-Output "Command: \"$Exe\""
+Write-Output "Add-ins: \"$AddinsDir\""
+Write-Output ""
 Write-Output "Run 'vba --help' to get started"

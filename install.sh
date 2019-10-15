@@ -7,6 +7,7 @@ set -e
 
 lib_dir="$HOME/Library/Application Support/vba-blocks"
 bin_dir="$lib_dir/bin"
+exe="$bin_dir/vba"
 addins_dir="$lib_dir/addins/build"
 addins_link="$HOME/vba-blocks Add-ins"
 zip_file="$lib_dir/vba-blocks-mac.tar.gz"
@@ -14,6 +15,9 @@ export_bin="export PATH=\"\$PATH:$bin_dir\""
 zprofile="$HOME/.zprofile"
 profile="$HOME/.profile"
 bash_profile="$HOME/.bash_profile"
+
+[ -d "$lib_dir" ]
+existing_install=$?
 
 if [ $# -eq 0 ]; then
 	release_path=$(curl -sSf https://github.com/vba-blocks/vba-blocks/releases |
@@ -57,17 +61,24 @@ ln -sf "$addins_dir" "$addins_link"
 
 echo ""
 echo "\033[32mSuccess!\033[m vba-blocks was installed successfully."
+echo ""
+echo "Command: \"$exe\""
+echo "Add-ins: \"$addins_link\""
+echo ""
 echo "Open a new Terminal window and run 'vba --help' to get started"
-echo ""
-echo "[Additional Instructions]"
-echo ""
-echo "For more recent versions of Office for Mac, you will need to"
-echo "trust access to the VBA project object model"
-echo "for vba-blocks to work correctly."
-echo ""
-echo "1. Open Excel"
-echo "2. Click \"Excel\" in the menu bar"
-echo "3. Select \"Preferences\" in the menu"
-echo "4. Click \"Security\" in the Preferences dialog"
-echo "5. Check \"Trust access to the VBA project object model\""
-echo "   in the Security dialog"
+
+if (( existing_install == 0 )); then
+	echo ""
+	echo "[Additional Instructions]"
+	echo ""
+	echo "For more recent versions of Office for Mac, you will need to"
+	echo "trust access to the VBA project object model"
+	echo "for vba-blocks to work correctly."
+	echo ""
+	echo "1. Open Excel"
+	echo "2. Click \"Excel\" in the menu bar"
+	echo "3. Select \"Preferences\" in the menu"
+	echo "4. Click \"Security\" in the Preferences dialog"
+	echo "5. Check \"Trust access to the VBA project object model\""
+	echo "   in the Security dialog"
+fi
